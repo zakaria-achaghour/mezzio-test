@@ -64,4 +64,11 @@ class User
     {
         $this->password = $password;
     }
+
+    public function setUser(array $reuestBody) :void {
+        $this->setName($reuestBody['name']);
+        $this->setEmail($reuestBody['email']);
+        $this->setPassword($reuestBody['password']);
+       
+    }
 }

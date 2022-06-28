@@ -6,7 +6,11 @@ namespace User;
 use Doctrine\ORM\Mapping\Driver\XmlDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Laminas\Hydrator\ObjectPropertyHydrator;
 use Whoops\Handler\Handler;
+use Mezzio\Hal\Metadata\MetadataMap;
+use User\Entity\User;
+use User\Entity\UserCollection;
 
 /**
  * The configuration provider for the User module
@@ -27,6 +31,7 @@ class ConfigProvider
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
             'doctrine' => $this->getDoctrineEntities(),
+            MetadataMap::class => $this->getHalMetadataMap(),
         ];
     }
 
@@ -44,7 +49,8 @@ class ConfigProvider
             'invokables' => [
             ],
             'factories'  => [
-                Handler\AllUserHandler::class=> Handler\AllUserHandlerFactory::class
+                Handler\AllUserHandler::class=> Handler\AllUserHandlerFactory::class,
+                Handler\StoreUserHandler::class => Handler\StoreUserHandlerFactory::class,
             ],
         ];
     }
@@ -76,6 +82,24 @@ class ConfigProvider
                     'cache' => 'array',
                     'paths' => [__DIR__ . '/Entity'],
                 ],
+            ],
+        ];
+    }
+
+    public function getHalMetadataMap()
+    {
+        return [
+            [
+                '__class__' => RouteBasedResourceMetadata::class,
+                'resource_class' => User::class,
+                'route' => 'users.show',
+                'extractor' => ObjectPropertyHydrator::class,
+            ],
+            [
+                '__class__' => RouteBasedCollectionMetadata::class,
+                'collection_class' => UserCollection::class,
+                'collection_relation' => 'user',
+                'route' => 'users.all',
             ],
         ];
     }

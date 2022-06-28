@@ -63,6 +63,7 @@
         "mezzio/mezzio-authorization-rbac": "^1.3",
         "mezzio/mezzio-csrf": "^1.5",
         "mezzio/mezzio-flash": "^1.3",
+        "mezzio/mezzio-hal": "^2.4",
         "mezzio/mezzio-helpers": "^5.7",
         "mezzio/mezzio-laminasrouter": "^3.0.1",
         "mezzio/mezzio-laminasviewrenderer": "^2.2",
